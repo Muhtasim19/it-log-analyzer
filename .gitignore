@@ -225,3 +225,7 @@ __marimo__/
 # Generated Log Analyzer reports
 output/*
 !output/.gitkeep
+
+# Generated reports
+output/*
+!output/.gitkeep
