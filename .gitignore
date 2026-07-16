@@ -57,6 +57,11 @@ cover/
 
 # Django stuff:
 *.log
+
+!data/sample_windows.log
+!data/sample_auth.log
+!data/sample_access.log
+
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
