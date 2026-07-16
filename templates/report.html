@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>IT Log Analyzer Report</title>
+
+    <style>
+        :root {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #172033;
+            background: #f4f6f9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header,
+        section {
+            background: white;
+            border: 1px solid #d9deea;
+            border-radius: 10px;
+            margin-bottom: 1.25rem;
+            padding: 1.25rem;
+        }
+
+        h1,
+        h2 {
+            margin-top: 0;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .summary-card {
+            border: 1px solid #d9deea;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 1.75rem;
+            margin-top: 0.4rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border-bottom: 1px solid #d9deea;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f1f3f7;
+        }
+
+        .empty-state {
+            color: #606b80;
+            font-style: italic;
+        }
+
+        .severity-critical,
+        .severity-high {
+            font-weight: bold;
+        }
+
+        code {
+            overflow-wrap: anywhere;
+            white-space: normal;
+        }
+    </style>
+</head>
+
+<body>
+<main>
+    <header>
+        <h1>IT Log Analyzer Security Report</h1>
+        <p>
+            Generated:
+            <strong>{{ report.generated_at }}</strong>
+        </p>
+    </header>
+
+    <section>
+        <h2>Summary</h2>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                Total Events
+                <strong>{{ report.total_events }}</strong>
+            </div>
+
+            <div class="summary-card">
+                Total Alerts
+                <strong>{{ report.total_alerts }}</strong>
+            </div>
+
+            <div class="summary-card">
+                Risk Score
+                <strong>{{ report.risk.score }}</strong>
+            </div>
+
+            <div class="summary-card">
+                Risk Category
+                <strong>{{ report.risk.category }}</strong>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Alerts by Severity</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Severity</th>
+                    <th>Alert Count</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for severity, count
+                      in report.alerts_by_severity.items() %}
+                <tr>
+                    <td>{{ severity }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Alerts by Source</h2>
+
+        {% if report.alerts_by_source %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Alert Count</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for source, count
+                      in report.alerts_by_source.items() %}
+                <tr>
+                    <td>{{ source }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No alert sources were recorded.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Top Suspicious Source IP Addresses</h2>
+
+        {% if report.top_source_ips %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Source IP</th>
+                    <th>Alert Count</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for entry in report.top_source_ips %}
+                <tr>
+                    <td>{{ entry.source_ip }}</td>
+                    <td>{{ entry.alert_count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">
+            No source IP addresses were recorded.
+        </p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Recent Alerts</h2>
+
+        {% if report.recent_alerts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Severity</th>
+                    <th>Rule</th>
+                    <th>Source</th>
+                    <th>Source IP</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for alert in report.recent_alerts %}
+                <tr>
+                    <td>{{ alert.timestamp or "Unknown" }}</td>
+
+                    <td class="severity-{{ (
+                        alert.severity or 'unknown'
+                    )|lower }}">
+                        {{ alert.severity or "Unknown" }}
+                    </td>
+
+                    <td>{{ alert.rule_name or "Unknown" }}</td>
+                    <td>{{ alert.source or "Unknown" }}</td>
+                    <td>{{ alert.source_ip or "Unknown" }}</td>
+                    <td>{{ alert.description or "" }}</td>
+                    <td>{{ alert.status or "Unknown" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">
+            No security alerts were generated.
+        </p>
+        {% endif %}
+    </section>
+</main>
+</body>
+</html>

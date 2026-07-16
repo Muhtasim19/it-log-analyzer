@@ -1,0 +1,5 @@
+{"timestamp":"2026-07-15T21:30:00Z","event_id":4624,"source_ip":"192.168.1.10","username":"administrator","hostname":"WIN-SRV-01","message":"An account was successfully logged on."}
+{"timestamp":"2026-07-15T21:32:00Z","event_id":4625,"source_ip":"192.168.1.50","username":"admin","hostname":"WIN-SRV-01","message":"An account failed to log on."}
+{"timestamp":"2026-07-15T21:33:00Z","event_id":4625,"source_ip":"192.168.1.50","username":"admin","hostname":"WIN-SRV-01","message":"An account failed to log on."}
+{"timestamp":"2026-07-15T21:34:00Z","event_id":4625,"source_ip":"192.168.1.50","username":"admin","hostname":"WIN-SRV-01","message":"An account failed to log on."}
+{"timestamp":"2026-07-15T21:35:00Z","event_id":4740,"source_ip":"192.168.1.50","username":"admin","hostname":"WIN-SRV-01","message":"A user account was locked out."}
