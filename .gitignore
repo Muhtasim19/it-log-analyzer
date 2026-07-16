@@ -229,3 +229,7 @@ output/*
 # Generated reports
 output/*
 !output/.gitkeep
+# Generated Log Analyzer reports
+output/*.html
+output/*.json
+!output/.gitkeep
